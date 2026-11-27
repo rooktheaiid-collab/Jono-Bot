@@ -32,7 +32,11 @@ Key Gemini, ElevenLabs, dan GitHub divalidasi ke penyedia sebelum disimpan. Raha
 Instalasi lokal butuh KODE AKSES yang diterbitkan pemilik Jono Bot. Alurnya:
 
 1. Minta kode: kirim email ke rook.the.ai.id@gmail.com (nama dan keperluan). Pemilik menerbitkan dua hal: KODE AKSES (token panjang berawalan `JB1.`) dan KODE ADMIN (dikirim lewat jalur terpisah).
-2. Pasang:
+2. Pasang (cara tercepat, satu perintah):
+```
+curl -fsSL https://raw.githubusercontent.com/rooktheaiid-collab/Jono-Bot/main/get.sh | bash
+```
+Kalau repo masih private: `GITHUB_TOKEN=<token read-only dari pemilik> bash get.sh`. Atau manual:
 ```
 git clone https://github.com/rooktheaiid-collab/Jono-Bot.git
 cd Jono-Bot
