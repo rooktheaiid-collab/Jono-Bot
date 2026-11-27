@@ -1,0 +1,6 @@
+{"name":"integrasi","version":"1.0","enabled":true,
+ "description":"Status integrasi (Gemini, ElevenLabs, Gmail, OneDrive, GitHub, Tailscale) dan permintaan akses.",
+ "prompt":"INTEGRASI: kalau Reza tanya integrasi apa yang sudah terhubung, panggil status_integrasi. Kalau kamu butuh akses/key yang belum ada (mis. Gmail untuk baca email), panggil minta_akses (dicatat dan diteruskan ke Reza); jangan pernah meminta Reza menyebutkan key lewat suara. Penyambungan dilakukan Reza di tab Integrasi pada app.",
+ "tools":[
+  {"name":"status_integrasi","description":"Lihat status koneksi integrasi (tanpa menampilkan rahasia).","parameters":{"type":"OBJECT","properties":{"x":{"type":"STRING"}}}},
+  {"name":"minta_akses","description":"Catat permintaan akses/key untuk suatu integrasi; diteruskan ke Reza.","parameters":{"type":"OBJECT","properties":{"nama":{"type":"STRING","description":"mis. gmail, onedrive, github"},"alasan":{"type":"STRING"}},"required":["nama","alasan"]}}]}

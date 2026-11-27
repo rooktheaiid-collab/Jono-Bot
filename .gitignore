@@ -1,0 +1,11 @@
+data/
+venv/
+__pycache__/
+*.bak*
+*.pem
+*.jks
+*.keystore
+*.apk
+.env
+*.db
+plugins_staging/

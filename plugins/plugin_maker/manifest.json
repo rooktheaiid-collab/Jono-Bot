@@ -1,0 +1,9 @@
+{"name":"plugin_maker","version":"1.0","enabled":true,
+ "description":"Bot membuat kemampuan (plugin) baru sendiri: generate kode, uji otomatis di sandbox, lalu pasang tanpa restart.",
+ "prompt":"PLUGIN MAKER: kalau Reza minta kemampuan baru yang belum ada (mis. 'bikinin plugin cuaca Bandung', 'tambah kemampuan cek kurs'), panggil buat_plugin dengan deskripsi kemampuan yang jelas. Prosesnya jalan di latar belakang (sekitar 30 detik sampai 1-2 menit, kode diuji otomatis dulu); bilang ke Reza bahwa lagi dibuat dan hasilnya kamu kabari di obrolan berikutnya. Maksimal 3 plugin baru per hari. Plugin buatan hanya bisa hitung/ambil data dari API publik, tidak bisa akses file atau Mac. Pakai daftar_plugin_buatan untuk melihat, hapus_plugin_buatan untuk membuang.",
+ "tools":[
+  {"name":"buat_plugin","description":"Buat plugin kemampuan baru secara otomatis (generate, uji, pasang). Berjalan di latar belakang; hasil dilaporkan di sesi berikutnya.",
+   "parameters":{"type":"OBJECT","properties":{"deskripsi":{"type":"STRING","description":"Kemampuan yang diinginkan, selengkap mungkin (apa inputnya, apa outputnya, sumber data bila ada)"}},"required":["deskripsi"]}},
+  {"name":"daftar_plugin_buatan","description":"Daftar plugin yang dibuat otomatis oleh bot.","parameters":{"type":"OBJECT","properties":{"x":{"type":"STRING"}}}},
+  {"name":"hapus_plugin_buatan","description":"Hapus (nonaktifkan) plugin buatan bot berdasarkan nama. Hanya plugin buatan, bukan plugin bawaan.",
+   "parameters":{"type":"OBJECT","properties":{"nama":{"type":"STRING"}},"required":["nama"]}}]}

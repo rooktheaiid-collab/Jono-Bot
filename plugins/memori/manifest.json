@@ -1,0 +1,7 @@
+{"name":"memori","version":"1.0","enabled":true,
+ "description":"Simpan fakta penting tentang user dan cari di ingatan lama.",
+ "tools":[
+  {"name":"simpan_fakta","description":"Simpan satu fakta/preferensi penting tentang user supaya diingat di sesi berikutnya. Pakai saat user bilang 'ingat ini' atau menyebut hal penting yang stabil.",
+   "parameters":{"type":"OBJECT","properties":{"fakta":{"type":"STRING","description":"Satu kalimat singkat"}},"required":["fakta"]}},
+  {"name":"cari_ingatan","description":"Cari di obrolan dan fakta lama berdasarkan kata kunci, kalau user tanya 'kemarin kita bahas apa'.",
+   "parameters":{"type":"OBJECT","properties":{"kata":{"type":"STRING"}},"required":["kata"]}}]}

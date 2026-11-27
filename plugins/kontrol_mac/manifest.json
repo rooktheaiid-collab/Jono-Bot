@@ -1,0 +1,12 @@
+{"name":"kontrol_mac","version":"1.0","enabled":true,
+ "description":"Kontrol MacBook Reza lewat SSH (Tailscale): buka app, volume, cari file, perintah shell berpagar.",
+ "prompt":"Kontrol MacBook: kamu BOLEH mengontrol MacBook Reza langsung lewat tool buka_aplikasi, atur_volume, cari_file, jalankan_perintah (ini pengecualian dari aturan 'aksi nyata harus lewat Telegram'). Hanya lakukan kalau Reza memintanya. Perintah yang mengubah atau menghapus file/pengaturan: konfirmasi dulu secara lisan dan tunggu jawaban 'ya'. Jangan pernah mencoba sudo atau hal destruktif. Setelah selesai jawab sangat singkat gaya santai (contoh: 'Spotify kebuka, bro'). Kalau Mac tidak terjangkau, bilang Mac-nya lagi gak nyambung.",
+ "tools":[
+  {"name":"buka_aplikasi","description":"Buka aplikasi di MacBook Reza, mis. Spotify, Safari, Calculator.",
+   "parameters":{"type":"OBJECT","properties":{"nama":{"type":"STRING","description":"Nama aplikasi persis seperti di folder Applications"}},"required":["nama"]}},
+  {"name":"atur_volume","description":"Atur volume output MacBook, 0 sampai 100.",
+   "parameters":{"type":"OBJECT","properties":{"level":{"type":"INTEGER","description":"0-100"}},"required":["level"]}},
+  {"name":"cari_file","description":"Cari file/folder di MacBook berdasarkan nama (Spotlight). Maksimal 15 hasil.",
+   "parameters":{"type":"OBJECT","properties":{"nama":{"type":"STRING"},"folder":{"type":"STRING","description":"Opsional, mis. ~/Downloads atau ~/Documents"}},"required":["nama"]}},
+  {"name":"jalankan_perintah","description":"Jalankan satu perintah shell di MacBook (bash). Timeout 20 detik, output dipotong. Hanya untuk perintah aman dan biasa; yang mengubah/menghapus harus dikonfirmasi user dulu.",
+   "parameters":{"type":"OBJECT","properties":{"perintah":{"type":"STRING"}},"required":["perintah"]}}]}

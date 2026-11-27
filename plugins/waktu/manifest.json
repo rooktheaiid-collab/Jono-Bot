@@ -1,0 +1,7 @@
+{"name":"waktu","version":"1.0","enabled":true,
+ "description":"Jam/tanggal sekarang dan cuaca (Open-Meteo, tanpa API key).",
+ "tools":[
+  {"name":"waktu_sekarang","description":"Tanggal dan jam saat ini. Default zona Asia/Jakarta.",
+   "parameters":{"type":"OBJECT","properties":{"zona":{"type":"STRING","description":"Zona IANA, mis. Asia/Jakarta, Asia/Tokyo"}}}},
+  {"name":"cuaca","description":"Cuaca sekarang dan prakiraan singkat untuk sebuah kota.",
+   "parameters":{"type":"OBJECT","properties":{"kota":{"type":"STRING","description":"Nama kota, default Cileungsi"}}}}]}

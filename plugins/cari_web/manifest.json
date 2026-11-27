@@ -1,0 +1,8 @@
+{"name":"cari_web","version":"1.0","enabled":true,
+ "description":"Cari berita dan info terkini di internet (tanpa API key: SearXNG lokal, fallback Google News RSS + Bing).",
+ "tools":[{"name":"cari_web",
+  "description":"Cari di internet. Pakai untuk berita, kejadian terkini, harga, skor, atau fakta yang mungkin sudah berubah. Hasil berisi judul, sumber, tanggal, ringkasan.",
+  "parameters":{"type":"OBJECT","properties":{
+    "query":{"type":"STRING","description":"Kata kunci pencarian"},
+    "jenis":{"type":"STRING","description":"'berita' untuk berita terbaru, 'umum' untuk pencarian web biasa"}},
+   "required":["query"]}}]}

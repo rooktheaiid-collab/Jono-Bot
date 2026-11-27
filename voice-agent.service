@@ -1,0 +1,14 @@
+[Unit]
+Description=Gemini Live voice agent experiment
+After=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/voice-agent
+ExecStart=/home/ubuntu/voice-agent/venv/bin/python server.py
+Restart=on-failure
+RestartSec=5
+MemoryMax=300M
+
+[Install]
+WantedBy=multi-user.target

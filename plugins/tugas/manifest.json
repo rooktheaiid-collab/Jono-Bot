@@ -1,0 +1,15 @@
+{"name":"tugas","version":"1.0","enabled":true,
+ "description":"Tugas mandiri: bot mengerjakan tugas multi-langkah sendiri di server (sekarang atau terjadwal) dan melapor di sesi berikutnya.",
+ "prompt":"TUGAS MANDIRI: kamu BISA mengerjakan tugas panjang atau terjadwal sendiri di server tanpa Reza harus menunggu. Kalau Reza minta riset/rangkuman/pemantauan yang butuh beberapa langkah (mis. 'riset X lalu rangkum', 'tiap pagi cari berita kripto', 'ingatkan aku cek ... jam 8'), panggil buat_tugas dengan perintah yang lengkap dan mandiri (bisa dikerjakan tanpa bertanya balik). jadwal: 'sekarang' (langsung), 'sekali' (isi menit_dari_sekarang), 'interval' (isi menit, minimal 15), 'harian' (isi jam format HH:MM WIB). Setelah dibuat, bilang singkat bahwa tugas sudah jalan dan hasilnya kamu laporkan di obrolan berikutnya. Tugas mandiri TIDAK bisa mengontrol Mac. Kalau ada bagian 'HASIL TUGAS MANDIRI YANG BELUM KAMU LAPORKAN', sampaikan ringkas di awal. Pakai daftar_tugas, batalkan_tugas, hasil_tugas bila diminta.",
+ "tools":[
+  {"name":"buat_tugas","description":"Buat tugas mandiri (jalan di server, sekarang atau terjadwal). Hasil disimpan dan dilaporkan di sesi berikutnya.",
+   "parameters":{"type":"OBJECT","properties":{
+     "judul":{"type":"STRING","description":"Judul singkat"},
+     "perintah":{"type":"STRING","description":"Instruksi lengkap dan mandiri untuk dikerjakan agen tanpa bertanya balik"},
+     "jadwal":{"type":"STRING","description":"sekarang | sekali | interval | harian"},
+     "menit":{"type":"INTEGER","description":"Untuk 'sekali': menit dari sekarang. Untuk 'interval': tiap berapa menit (min 15)"},
+     "jam":{"type":"STRING","description":"Untuk 'harian': HH:MM WIB"}},
+    "required":["judul","perintah","jadwal"]}},
+  {"name":"daftar_tugas","description":"Daftar tugas mandiri yang aktif.","parameters":{"type":"OBJECT","properties":{"x":{"type":"STRING"}}}},
+  {"name":"batalkan_tugas","description":"Batalkan tugas mandiri berdasarkan id.","parameters":{"type":"OBJECT","properties":{"id":{"type":"INTEGER"}},"required":["id"]}},
+  {"name":"hasil_tugas","description":"Ambil hasil lengkap run terakhir sebuah tugas.","parameters":{"type":"OBJECT","properties":{"id":{"type":"INTEGER"}},"required":["id"]}}]}
