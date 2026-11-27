@@ -29,17 +29,28 @@ Buka tab Integrasi, masukkan kode admin. Redirect URI OAuth: `https://<domain>/a
 Key Gemini, ElevenLabs, dan GitHub divalidasi ke penyedia sebelum disimpan. Rahasia tidak pernah dikembalikan lewat API.
 
 ## Pasang lokal di macOS
-Jono Bot bisa jalan penuh di Mac sendiri (tanpa VPS):
+Instalasi lokal butuh KODE AKSES yang diterbitkan pemilik Jono Bot. Alurnya:
 
+1. Minta kode: kirim email ke rook.the.ai.id@gmail.com (nama dan keperluan). Pemilik menerbitkan dua hal: KODE AKSES (token panjang berawalan `JB1.`) dan KODE ADMIN (dikirim lewat jalur terpisah).
+2. Pasang:
 ```
 git clone https://github.com/rooktheaiid-collab/Jono-Bot.git
 cd Jono-Bot
-bash install_mac.sh
+bash install_mac.sh        # tempel KODE AKSES saat diminta (atau JONOBOT_CODE=... bash install_mac.sh)
 ```
-Script ini: menyalin kode ke `~/JonoBot`, membuat venv + dependensi, menanyakan key Gemini (boleh dilewati, isi nanti di tab Integrasi), membuat passcode sesi dan kode admin baru (kode admin tampil sekali di terminal), lalu memasang service launchd `id.reza.jonobot` (autostart saat login, restart otomatis).
+Installer memverifikasi tanda tangan kode (offline), menolak kode palsu atau kedaluwarsa, lalu: menyalin kode ke `~/JonoBot`, membuat venv + dependensi, menanyakan key Gemini (boleh dilewati, isi nanti di tab Integrasi), memasang passcode sesi dan hash kode admin dari kode akses, dan memasang service launchd `id.reza.jonobot` (autostart, restart otomatis).
+3. Buka `http://127.0.0.1:8780/` di Safari atau Chrome. Tab Integrasi dibuka dengan KODE ADMIN dari pemilik.
 
-Buka `http://127.0.0.1:8780/` di Safari atau Chrome. Tab Integrasi dan semua plugin jalan. Di mode lokal (`VA_LOCAL=1`) plugin kontrol_mac dan baca_dokumen menjalankan perintah langsung di Mac ini, bukan lewat SSH.
+Di mode lokal (`VA_LOCAL=1`) plugin kontrol_mac dan baca_dokumen menjalankan perintah langsung di Mac ini, bukan lewat SSH. Opsi installer: `--no-autostart`, `--port N`, `--uninstall`. Log di `~/JonoBot/logs/`. Update: `git pull && bash install_mac.sh` (kode akses dan data tidak ditimpa).
 
-Opsi: `--no-autostart`, `--port N`, `--uninstall`. Log di `~/JonoBot/logs/`. Update: `git pull && bash install_mac.sh` (data dan kunci tidak ditimpa).
+Batasan jujur: verifikasi kode berjalan offline di mesin penerima, jadi ini gerbang untuk instalasi resmi, bukan penguncian mutlak. Kode sumber terbuka bagi yang punya repo, dan kode yang sudah terbit tidak bisa dicabut dari jauh sebelum kedaluwarsa. Karena itu kode diberi masa berlaku.
 
-Catatan: pencarian web memakai SearXNG lokal kalau ada, kalau tidak otomatis pakai Google News RSS dan Bing. Notifikasi proaktif ke Telegram butuh poller dari sisi Instinct dan tidak aktif di instalasi lokal. Untuk OAuth Gmail/OneDrive di lokal, daftarkan redirect URI `http://127.0.0.1:8780/api/integrasi/oauth/callback`.
+## Penerbit kode (khusus pemilik)
+`tools/issue_code.py` menerbitkan kode dengan kunci privat Ed25519 yang hanya dipegang pemilik (kunci publiknya ada di `tools/issuer_pub.txt`, privatnya TIDAK di repo):
+```
+pip install cryptography
+python3 tools/issue_code.py --name "Nama Penerima" --days 30 --key-file ~/jonobot_issuer.key
+```
+Hasilnya: KODE AKSES (kirim ke penerima), KODE ADMIN (kirim terpisah, tampil sekali), dan catatan penerbitan tanpa rahasia di `~/jonobot_issued.log`. Di server hanya hash kode admin yang tersimpan.
+
+Catatan lain: notifikasi proaktif ke Telegram tidak aktif di instalasi lokal. Redirect URI OAuth untuk lokal: `http://127.0.0.1:8780/api/integrasi/oauth/callback`.

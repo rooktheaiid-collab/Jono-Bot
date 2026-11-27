@@ -31,30 +31,23 @@ fi
 echo "2/5 Pasang dependensi (venv)"
 [ -d "$APP/venv" ] || "$PY" -m venv "$APP/venv"
 "$APP/venv/bin/pip" install -q --upgrade pip
-"$APP/venv/bin/pip" install -q aiohttp websockets pypdf python-docx openpyxl pymupdf
+"$APP/venv/bin/pip" install -q aiohttp websockets cryptography pypdf python-docx openpyxl pymupdf
 
 echo "3/5 Kunci dan kode akses"
+if [ -s "$HOME/.voice_agent_passcode" ] && [ -s "$HOME/.admin_code_hash" ]; then
+  echo "Kode akses sudah terpasang (instalasi sebelumnya), dipakai lagi."
+else
+  CODE="${JONOBOT_CODE:-}"
+  if [ -z "$CODE" ]; then
+    echo "Kode akses diterbitkan oleh pemilik Jono Bot. Belum punya? Minta dulu ke rook.the.ai.id@gmail.com."
+    printf "Tempel KODE AKSES: "; read -r CODE
+  fi
+  "$APP/venv/bin/python" "$APP/tools/verify_code.py" "$CODE" || { echo "Instalasi dibatalkan."; exit 1; }
+fi
 if [ ! -s "$HOME/.gemini_api_key" ]; then
   printf "API key Gemini (Enter untuk lewati, bisa diisi nanti di tab Integrasi): "
   read -rs GK; echo
   if [ -n "$GK" ]; then ( umask 077; printf '%s' "$GK" > "$HOME/.gemini_api_key" ); fi
-fi
-if [ ! -s "$HOME/.voice_agent_passcode" ]; then
-  ( umask 077; "$PY" -c 'import secrets;print(secrets.token_urlsafe(18))' > "$HOME/.voice_agent_passcode" )
-  NEWPC=1
-fi
-if [ ! -s "$HOME/.admin_code_hash" ]; then
-  ADMIN="$("$PY" - <<'PYX'
-import secrets, hashlib, os
-code = secrets.token_urlsafe(12)
-salt = os.urandom(16)
-h = hashlib.scrypt(code.encode(), salt=salt, n=2**14, r=8, p=1, dklen=32).hex()
-p = os.path.expanduser("~/.admin_code_hash")
-fd = os.open(p, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
-os.write(fd, (salt.hex() + "$" + h).encode()); os.close(fd)
-print(code)
-PYX
-)"
 fi
 chmod 700 "$HOME/.ssh" 2>/dev/null || true
 
@@ -98,7 +91,4 @@ done
 if [ "$OK" = "1" ]; then echo "Jalan: http://127.0.0.1:$PORT/"; else echo "Belum merespons. Lihat $APP/logs/err.log"; fi
 echo
 echo "Buka di Safari/Chrome: http://127.0.0.1:$PORT/  (mikrofon boleh diizinkan di localhost)"
-[ -n "${NEWPC:-}" ] && echo "Passcode sesi suara ada di: ~/.voice_agent_passcode (file ini, jangan dibagikan)"
-if [ -n "${ADMIN:-}" ]; then
-  echo "KODE ADMIN menu Integrasi (tampil sekali, catat sekarang): $ADMIN"
-fi
+echo "Kode admin menu Integrasi: pakai kode admin yang dikirim pemilik (terpisah dari kode akses)."
