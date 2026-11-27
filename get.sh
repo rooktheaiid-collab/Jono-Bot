@@ -7,9 +7,13 @@ set -euo pipefail
 REPO="rooktheaiid-collab/Jono-Bot"
 DEST="${JONOBOT_SRC:-$HOME/Jono-Bot}"
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
-AUTH=(); [ -n "${GITHUB_TOKEN:-}" ] && AUTH=(-H "Authorization: Bearer $GITHUB_TOKEN")
+TOKEN="${GITHUB_TOKEN:-}"  # tanpa array: kompatibel bash 3.2 (macOS) dengan set -u
 echo "Mengunduh Jono Bot..."
-curl -fsSL "${AUTH[@]}" "https://api.github.com/repos/$REPO/tarball/main" -o "$TMP/jb.tgz" \
+if [ -n "$TOKEN" ]; then
+  curl -fsSL -H "Authorization: Bearer $TOKEN" "https://api.github.com/repos/$REPO/tarball/main" -o "$TMP/jb.tgz"
+else
+  curl -fsSL "https://api.github.com/repos/$REPO/tarball/main" -o "$TMP/jb.tgz"
+fi \
   || { echo "Gagal unduh. Kalau repo private, set GITHUB_TOKEN."; exit 1; }
 mkdir -p "$TMP/x" && tar xzf "$TMP/jb.tgz" -C "$TMP/x" --strip-components=1
 mkdir -p "$DEST" && cp -R "$TMP/x/." "$DEST/"
