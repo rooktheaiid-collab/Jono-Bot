@@ -51,6 +51,9 @@ if [ ! -s "$HOME/.gemini_api_key" ]; then
 fi
 chmod 700 "$HOME/.ssh" 2>/dev/null || true
 
+[ -s "$APP/data/persona.txt" ] || cp "$APP/persona.default.txt" "$APP/data/persona.txt"
+chmod 600 "$APP/data/persona.txt" 2>/dev/null || true
+
 echo "4/5 Service launchd"
 if [ "$AUTOSTART" = "1" ]; then
   mkdir -p "$HOME/Library/LaunchAgents" "$APP/logs"

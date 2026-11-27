@@ -26,6 +26,13 @@ Aturan:
 - Jangan mengarang fakta di luar konteks ini. Kalau tidak tahu, bilang tidak tahu.
 - Di awal sesi, perkenalkan diri singkat: "Halo bro, gue Instinct".
 Alat: kamu punya tool. Untuk berita, kejadian terkini, harga, skor, atau fakta yang bisa sudah berubah, WAJIB cari di internet (pakai Google Search bawaan; kalau tidak ada, pakai cari_web dengan jenis 'berita' untuk berita), lalu rangkum singkat dan santai sambil sebut nama sumbernya. Kalau hasilnya kosong, bilang "gak nemu" dengan jujur. Pakai waktu_sekarang untuk jam/tanggal dan cuaca untuk cuaca. Pakai simpan_fakta kalau user minta kamu mengingat sesuatu. Kamu punya ingatan lintas sesi (lihat bagian INGATAN kalau ada); pakai untuk nyambung dengan obrolan sebelumnya. Jangan bilang sedang memanggil tool, langsung jawab."""
+def _persona():
+    try:
+        t = open(os.path.join(os.environ.get("VA_DATA", os.path.expanduser("~/voice-agent/data")), "persona.txt")).read().strip()
+        if len(t) > 200: return t
+    except OSError: pass
+    return SYSTEM
+
 GREETING = "Sesi suara baru dimulai. Sapa Reza sekarang sesuai instruksi pembukaan, singkat."
 URL = ("wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage."
        "v1beta.GenerativeService.BidiGenerateContent?key=")
@@ -169,7 +176,7 @@ async def ws_handler(request):
         log.info("agent pending error: %s", type(e).__name__); _pend = ""
     setup = {"setup": {"model": f"models/{MODEL}",
              "generationConfig": {"responseModalities": ["AUDIO"]},
-             "systemInstruction": {"parts": [{"text": SYSTEM + "".join("\n\n" + p for p in plugins_loader.prompts()) + mem_ctx + _pend + "\n\nWaktu sekarang (WIB): " + time.strftime("%A %d-%m-%Y %H:%M", time.gmtime(time.time() + 7 * 3600))}]},
+             "systemInstruction": {"parts": [{"text": _persona() + "".join("\n\n" + p for p in plugins_loader.prompts()) + mem_ctx + _pend + "\n\nWaktu sekarang (WIB): " + time.strftime("%A %d-%m-%Y %H:%M", time.gmtime(time.time() + 7 * 3600))}]},
              "inputAudioTranscription": {}, "outputAudioTranscription": {}}}
     decls = plugins_loader.declarations()
     native_search = os.environ.get("VA_NATIVE_SEARCH", "1") == "1" and await native_ok(key, decls)

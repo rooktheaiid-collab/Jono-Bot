@@ -45,6 +45,9 @@ Di mode lokal (`VA_LOCAL=1`) plugin kontrol_mac dan baca_dokumen menjalankan per
 
 Batasan jujur: verifikasi kode berjalan offline di mesin penerima, jadi ini gerbang untuk instalasi resmi, bukan penguncian mutlak. Kode sumber terbuka bagi yang punya repo, dan kode yang sudah terbit tidak bisa dicabut dari jauh sebelum kedaluwarsa. Karena itu kode diberi masa berlaku.
 
+## Persona
+Kepribadian bot (gaya JARVIS, sapaan "Sir") ada di `data/persona.txt` (salinan awal: `persona.default.txt`). Ubah file itu untuk mengganti gaya, tanpa restart; hapus file untuk kembali ke persona bawaan kode.
+
 ## Penerbit kode
 Kode akses diterbitkan dengan tooling terpisah yang private (bukan bagian repo ini). Repo ini hanya memuat kunci publik verifikasi (`tools/issuer_pub.txt`) dan `tools/verify_code.py`.
 
