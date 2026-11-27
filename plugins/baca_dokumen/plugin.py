@@ -4,6 +4,10 @@ HOST = os.environ.get("MAC_HOST", "100.126.45.100")
 USER = os.environ.get("MAC_USER", "macbookprom1")
 KEY = os.path.expanduser("~/.ssh/macbook_reza_key")
 HOME = f"/Users/{USER}"
+LOCAL = os.environ.get("VA_LOCAL", "0") == "1"
+if LOCAL:
+    HOME = os.path.expanduser("~")
+    USER = os.path.basename(HOME)
 WORK = "/tmp/baca_dokumen"
 MAX_BYTES = 20 * 1024 * 1024
 MAX_PAGES = 500
@@ -15,7 +19,10 @@ BAD_PARTS = ("/.ssh", "/Keychains", "/.gnupg", "/.aws", "/.kube", "/.config/gclo
 _sem = asyncio.Semaphore(2)
 
 async def ssh(remote_cmd, timeout=20, binary=False, limit=None):
-    args = ["ssh", "-i", KEY, "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", "-o", "IdentitiesOnly=yes",
+    if LOCAL:
+        args = ["/bin/bash", "-c", remote_cmd]
+    else:
+      args = ["ssh", "-i", KEY, "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", "-o", "IdentitiesOnly=yes",
             "-o", "StrictHostKeyChecking=yes", f"{USER}@{HOST}", remote_cmd]
     p = await asyncio.create_subprocess_exec(*args, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.DEVNULL)
     try:

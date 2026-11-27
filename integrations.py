@@ -96,6 +96,8 @@ async def test_github(token=None):
     return False, f"ditolak (http {st})"
 
 async def test_mac():
+    if os.environ.get("VA_LOCAL", "0") == "1":
+        return True, "Mode lokal: perintah Mac jalan langsung di mesin ini (tanpa SSH)"
     key = os.path.join(HOME, ".ssh", "macbook_reza_key")
     if not os.path.exists(key): return False, "key SSH Mac tidak ada"
     try:
