@@ -19,5 +19,5 @@ mkdir -p "$TMP/x" && tar xzf "$TMP/jb.tgz" -C "$TMP/x" --strip-components=1
 mkdir -p "$DEST" && cp -R "$TMP/x/." "$DEST/"
 cd "$DEST"
 # saat dijalankan lewat curl | bash, stdin adalah pipe; ambil input dari terminal
-if [ ! -t 0 ] && [ -r /dev/tty ]; then exec bash install_mac.sh "$@" </dev/tty; fi
+if [ ! -t 0 ] && ( : </dev/tty ) 2>/dev/null; then exec bash install_mac.sh "$@" </dev/tty; fi
 exec bash install_mac.sh "$@"
