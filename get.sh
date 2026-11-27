@@ -6,7 +6,7 @@
 set -euo pipefail
 REPO="rooktheaiid-collab/Jono-Bot"
 # Versi dipatok ke tag rilis (bukan main). Ganti dengan JONOBOT_REF=main untuk versi terbaru.
-REF="${JONOBOT_REF:-v1.0.0}"
+REF="${JONOBOT_REF:-v1.0.1}"
 DEST="${JONOBOT_SRC:-$HOME/Jono-Bot}"
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 TOKEN="${GITHUB_TOKEN:-}"  # tanpa array: kompatibel bash 3.2 (macOS) dengan set -u
@@ -14,7 +14,7 @@ echo "Mengunduh Jono Bot..."
 if [ -n "$TOKEN" ]; then
   curl -fsSL -H "Authorization: Bearer $TOKEN" "https://api.github.com/repos/$REPO/tarball/$REF" -o "$TMP/jb.tgz"
 else
-  curl -fsSL "https://api.github.com/repos/$REPO/tarball/$REF" -o "$TMP/jb.tgz"
+  curl -fsSL "https://codeload.github.com/$REPO/tar.gz/$REF" -o "$TMP/jb.tgz"
 fi \
   || { echo "Gagal unduh. Kalau repo private, set GITHUB_TOKEN."; exit 1; }
 if [ -n "${JONOBOT_SHA256:-}" ]; then
