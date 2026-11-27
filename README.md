@@ -45,12 +45,7 @@ Di mode lokal (`VA_LOCAL=1`) plugin kontrol_mac dan baca_dokumen menjalankan per
 
 Batasan jujur: verifikasi kode berjalan offline di mesin penerima, jadi ini gerbang untuk instalasi resmi, bukan penguncian mutlak. Kode sumber terbuka bagi yang punya repo, dan kode yang sudah terbit tidak bisa dicabut dari jauh sebelum kedaluwarsa. Karena itu kode diberi masa berlaku.
 
-## Penerbit kode (khusus pemilik)
-`tools/issue_code.py` menerbitkan kode dengan kunci privat Ed25519 yang hanya dipegang pemilik (kunci publiknya ada di `tools/issuer_pub.txt`, privatnya TIDAK di repo):
-```
-pip install cryptography
-python3 tools/issue_code.py --name "Nama Penerima" --days 30 --key-file ~/jonobot_issuer.key
-```
-Hasilnya: KODE AKSES (kirim ke penerima), KODE ADMIN (kirim terpisah, tampil sekali), dan catatan penerbitan tanpa rahasia di `~/jonobot_issued.log`. Di server hanya hash kode admin yang tersimpan.
+## Penerbit kode
+Kode akses diterbitkan dengan tooling terpisah yang private (bukan bagian repo ini). Repo ini hanya memuat kunci publik verifikasi (`tools/issuer_pub.txt`) dan `tools/verify_code.py`.
 
 Catatan lain: notifikasi proaktif ke Telegram tidak aktif di instalasi lokal. Redirect URI OAuth untuk lokal: `http://127.0.0.1:8780/api/integrasi/oauth/callback`.
