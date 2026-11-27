@@ -13,4 +13,7 @@ curl -fsSL "${AUTH[@]}" "https://api.github.com/repos/$REPO/tarball/main" -o "$T
   || { echo "Gagal unduh. Kalau repo private, set GITHUB_TOKEN."; exit 1; }
 mkdir -p "$TMP/x" && tar xzf "$TMP/jb.tgz" -C "$TMP/x" --strip-components=1
 mkdir -p "$DEST" && cp -R "$TMP/x/." "$DEST/"
-cd "$DEST" && exec bash install_mac.sh "$@"
+cd "$DEST"
+# saat dijalankan lewat curl | bash, stdin adalah pipe; ambil input dari terminal
+if [ ! -t 0 ] && [ -r /dev/tty ]; then exec bash install_mac.sh "$@" </dev/tty; fi
+exec bash install_mac.sh "$@"
